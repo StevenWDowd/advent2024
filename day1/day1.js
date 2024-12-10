@@ -23,7 +23,7 @@ async function day1(){
 
   //arr.then((numData))
 
-  const left = numData[0];;
+  const left = numData[0];
   const right = numData[1];
 
   left.sort((a,b) => a - b);
@@ -45,6 +45,31 @@ async function day1(){
   return totalDistance;
 }
 
-let num = day1();
+async function simScore(){
+  let numData = await readInput();
+  const left = numData[0];
+  const right = numData[1];
+  const rightMap = new Map();
+  for (let num of right){
+    if (rightMap.has(num)){
+      rightMap.set(num, rightMap.get(num) + 1);
+    } else {
+      rightMap.set(num, 1);
+    }
+  }
+  let score = 0;
+  for (let num of left){
+    if (rightMap.has(num)){
+      let toAdd = num * rightMap.get(num);
+      score+= toAdd;
+    }
+  }
+  return score;
+}
 
-num.then((val) => console.log('distance is ', val));
+//let num = day1();
+
+//num.then((val) => console.log('distance is ', val));
+let score = simScore();
+score.then((val) => console.log('score is: ', val));
+//console.log('score is: ', score);

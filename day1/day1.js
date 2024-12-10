@@ -1,37 +1,22 @@
 'use strict';
 const fs = require('node:fs');
 const readline = require('readline');
-
-
-
-// fs.readFile('/home/sdowd/advent24/day1/input.txt', 'utf8', (err, data) => {
-//   if (err){
-//     console.error(err);
-//     return;
-//   } else {
-//     //console.log(data);
-//   }
-// });
-
+const { pipeline } = require('stream/promises');
+const { open } = require('fs/promises');
 
 async function readInput(){
+  const coords = await open('/home/sdowd/advent24/day1/input.txt');
   const left = [];
   const right = [];
-
-  const rl = readline.createInterface({
-    input: fs.createReadStream('/home/sdowd/advent24/day1/input.txt'),
-    crlfDelay: Infinity,
-  });
-
-  rl.on('line', (line) => {
+  for await (const line of coords.readLines()){
     let split = line.split(' ');
-    //console.log('2nd num is: ', split[3]);
+//     //console.log('2nd num is: ', split[3]);
     left.push(Number(split[0]));
     right.push(Number(split[3]));
-  });
-
+  }
   return [left, right];
 }
+
 async function day1(){
 
   let numData = await readInput();
@@ -49,7 +34,7 @@ async function day1(){
 
   for (let i = 0; i < left.length; i++){
     let lNum = left[i];
-    console.log('lNum is: ', lNum);
+    //console.log('lNum is: ', lNum);
     let rNum = right[i];
 
     totalDistance+= Math.abs(lNum - rNum);

@@ -69,3 +69,99 @@ function goingDown(arr){
 
 let safe = safeLevels();
 safe.then((val) => console.log('safeNum is: ', val));
+
+//part 2
+
+function dampUp(arr){
+  let increasing = true;
+  let idx = 0;
+  let foundUS = false;
+  while (increasing && idx < arr.length - 1){
+    let one = arr[idx];
+    let two = arr[idx + 1];
+    if (two <= one){
+      if (!foundUS){
+        foundUS = true;
+        // idx++;
+        // let three = arr[idx+1];
+        //what if two was last element?
+
+        //just replace offending element with the preceding one and carry on?
+        arr[idx + 1] = one;
+
+      } else {
+        increasing = false;
+      }
+    }
+    idx++;
+  }
+  return increasing;
+}
+
+function dampDown(arr){
+  let decreasing = true;
+  let idx = 0;
+  let foundUS = false;
+  while (decreasing && idx < arr.length - 1){
+    let one = arr[idx];
+    let two = arr[idx + 1];
+    if (two >= one){
+      if (!foundUS){
+        foundUS = true;
+        // idx++;
+        // let three = arr[idx+1];
+        //what if two was last element?
+
+        //just replace offending element with the preceding one and carry on?
+        arr[idx + 1] = one;
+
+      } else {
+        decreasing = false;
+      }
+    }
+    idx++;
+  }
+  return decreasing;
+}
+
+function dampLim(arr){
+  let withinLim = true;
+  let idx = 0;
+  let foundUS = false;
+  while (withinLim && idx < arr.length - 1){
+    let curr = arr[idx];
+    let next = arr[idx + 1];
+    if (Math.abs(curr - next) < 1 || Math.abs(curr - next) > 3){
+      if (!foundUS){
+        foundUS = true;
+        arr[idx+1] = curr;
+      } else {
+        withinLim = false;
+      }
+    }
+    idx++;
+  }
+  return withinLim;
+}
+
+async function dampSafe(){
+  let reports = await readInput();
+  let safeNum = 0;
+
+  for (let report of reports){
+    let lim = dampLim(report);
+    let up = dampUp(report);
+    let down = dampDown(report);
+    if (lim && (up || down)) safeNum++;
+  }
+
+  return safeNum;
+}
+
+let damped = dampSafe();
+
+damped.then((val) => console.log('with damping, safeNum is: ', val));
+
+//pt1 answer is 663
+
+//672 is too low

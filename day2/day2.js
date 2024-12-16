@@ -73,6 +73,9 @@ safe.then((val) => console.log('safeNum is: ', val));
 //part 2
 
 function dampUp(arr){
+  //focus on slope changes?
+  //if increasing, n +1 always greater than n
+  let missCount = 0;
   let increasing = true;
   let idx = 0;
   let foundUS = false;
@@ -80,21 +83,23 @@ function dampUp(arr){
     let one = arr[idx];
     let two = arr[idx + 1];
     if (two <= one){
-      if (!foundUS){
-        foundUS = true;
-        // idx++;
-        // let three = arr[idx+1];
-        //what if two was last element?
+      missCount++;
+      // if (!foundUS){
+      //   foundUS = true;
+      //   // idx++;
+      //   // let three = arr[idx+1];
+      //   //what if two was last element?
 
-        //just replace offending element with the preceding one and carry on?
-        arr[idx + 1] = one;
+      //   //just replace offending element with the preceding one and carry on?
+      //   arr[idx + 1] = one;
 
-      } else {
-        increasing = false;
-      }
+      // } else {
+      //   increasing = false;
+      // }
     }
     idx++;
   }
+  if (missCount > 1) increasing = false;
   return increasing;
 }
 
@@ -102,25 +107,32 @@ function dampDown(arr){
   let decreasing = true;
   let idx = 0;
   let foundUS = false;
+  let missCount = 0;
   while (decreasing && idx < arr.length - 1){
     let one = arr[idx];
     let two = arr[idx + 1];
     if (two >= one){
-      if (!foundUS){
-        foundUS = true;
-        // idx++;
-        // let three = arr[idx+1];
-        //what if two was last element?
+      missCount++;
+      // if (!foundUS){
+      //   foundUS = true;
+      //   // idx++;
+      //   // let three = arr[idx+1];
+      //   //what if two was last element?
 
-        //just replace offending element with the preceding one and carry on?
-        arr[idx + 1] = one;
+      //   //create set and add idx of offending element?
 
-      } else {
-        decreasing = false;
-      }
+      //   //max no of direction changes is 2?
+
+      //   //just replace offending element with the preceding one and carry on?
+      //   arr[idx + 1] = one;
+
+      // } else {
+      //   decreasing = false;
+      // }
     }
     idx++;
   }
+  if (missCount > 1) return false;
   return decreasing;
 }
 
@@ -128,19 +140,22 @@ function dampLim(arr){
   let withinLim = true;
   let idx = 0;
   let foundUS = false;
+  let missCount = 0;
   while (withinLim && idx < arr.length - 1){
     let curr = arr[idx];
     let next = arr[idx + 1];
     if (Math.abs(curr - next) < 1 || Math.abs(curr - next) > 3){
-      if (!foundUS){
-        foundUS = true;
-        arr[idx+1] = curr;
-      } else {
-        withinLim = false;
-      }
+      missCount++;
+      // if (!foundUS){
+      //   foundUS = true;
+      //   arr[idx+1] = curr;
+      // } else {
+      //   withinLim = false;
+      // }
     }
     idx++;
   }
+  if (missCount > 1) withinLim = false;
   return withinLim;
 }
 
@@ -165,3 +180,7 @@ damped.then((val) => console.log('with damping, safeNum is: ', val));
 //pt1 answer is 663
 
 //672 is too low
+
+//828 way too high
+
+//728 likely too high

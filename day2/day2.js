@@ -90,7 +90,7 @@ function dampUp(arr){
   //let missCount = 0;
   let increasing = true;
   let idx = 0;
-  let foundUS = false;
+  //let foundUS = false;
   while (increasing && idx < arr.length - 1){
     let one = arr[idx];
     let two = arr[idx + 1];
@@ -182,16 +182,36 @@ function dampLim(arr){
   return withinLim;
 }
 
+function checkRep(arr){
+  let lim = inLim(arr);
+  let up = goingUp(arr);
+  let down = goingDown(arr);
+  if (lim && (up || down)) return true;
+  return false;
+}
+
 async function dampSafe(){
   let reports = await readInput();
   let safeNum = 0;
 
   for (let report of reports){
-    let lim = dampLim(report);
-    let up = dampUp(report);
-    let down = dampDown(report);
-    if (lim && (up || down)) safeNum++;
+    let isSafe = false;
+    let idx = 0;
+    if (checkRep(report)) isSafe = true;
+    while (!isSafe && idx < report.length){
+      let copy = [...report];
+      copy.splice(idx, 1);
+      if (checkRep(copy)) isSafe = true;
+      idx++;
+    }
+    if (isSafe) safeNum++;
   }
+  // for (let report of reports){
+  //   let lim = dampLim(report);
+  //   let up = dampUp(report);
+  //   let down = dampDown(report);
+  //   if (lim && (up || down)) safeNum++;
+  // }
 
   return safeNum;
 }
@@ -209,3 +229,5 @@ damped.then((val) => console.log('with damping, safeNum is: ', val));
 //728 likely too high -> yeah
 
 //704 is also wrong
+
+//aiming for 692

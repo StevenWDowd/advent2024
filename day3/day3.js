@@ -17,8 +17,8 @@ function part1(){
   const data = readInput();
   const arr = [...data.matchAll(exp1)];
   //console.log(arr[0]);
-  console.log(typeof(arr[0]));
-  console.log(Object.keys(arr[0]));
+  //console.log(typeof(arr[0]));
+  //console.log(Object.keys(arr[0]));
   const mults = [];
   for (let entry of arr){
     mults.push(entry['0']);
@@ -35,3 +35,19 @@ function part1(){
 
 let sum = part1();
 console.log('sum of mults is: ', sum);
+
+//part 2
+
+//filter out dos and don'ts along with mults
+//reverse array, use stack to decide which count and which don't
+
+const exp3 = /mul\([0-9]{1,3},[0-9]{1,3}\)|don't\(\)|do\(\)/g;
+
+function part2(){
+  let sum = 0;
+  const data = readInput();
+  const arr = data.match(exp3);
+  console.log(typeof(data));
+}
+
+part2();

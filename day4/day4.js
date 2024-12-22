@@ -6,6 +6,8 @@ const TARGET = 'XMAS';
 function readInput(){
   const data = fs.readFileSync('/home/sdowd/advent24/day4/input.txt',
     {encoding: 'utf8', flag: 'r'}).split('\n');
+  // const data = fs.readFileSync('/home/sdowd/advent24/day4/test1.txt',
+  //   {encoding: 'utf8', flag: 'r'}).split('\n');
     //console.log(data);
     return data;
 }
@@ -23,9 +25,11 @@ function checkLeft(x,y,arr,str){
   while (y >= 0 && idx < str.length){
     let curr = arr[x][y];
     if (curr !== str[idx]) return false;
+    if (idx === str.length - 1) return true;
     y = y-1;
     idx++;
   }
+  if (y < 0) return false;
   return true;
 }
 
@@ -35,9 +39,11 @@ function checkRight(x,y,arr,str){
   while (y < arr[0].length && idx < str.length){
     let curr = arr[x][y];
     if (curr !== str[idx]) return false;
+    if (idx === str.length - 1) return true;
     y = y+1;
     idx++;
   }
+  if (y >= arr[0].length) return false;
   return true;
 }
 
@@ -47,9 +53,11 @@ function checkUp(x,y,arr,str){
   while (x >= 0 && idx < str.length){
     let curr = arr[x][y];
     if (curr !== str[idx]) return false;
+    if (idx === str.length - 1) return true;
     x = x - 1;
     idx++;
   }
+  if (x < 0) return false;
   return true;
 }
 
@@ -59,9 +67,11 @@ function checkDown(x,y,arr,str){
   while (x < arr.length && idx < str.length){
     let curr = arr[x][y];
     if (curr !== str[idx]) return false;
+    if (idx === str.length - 1) return true;
     x = x + 1;
     idx++;
   }
+  if (x >= arr.length) return false;
   return true;
 }
 
@@ -72,10 +82,12 @@ function checkDiagUL(x,y,arr,str){
   while (x >= 0 && y >= 0 && idx < str.length){
     let curr = arr[x][y];
     if (curr !== str[idx]) return false;
+    if (idx === str.length - 1) return true;
     x--;
     y--;
     idx++;
   }
+  if (x < 0 || y < 0) return false;
   return true;
 }
 function checkDiagUR(x,y,arr,str){
@@ -85,10 +97,12 @@ function checkDiagUR(x,y,arr,str){
   while (x >= 0 && y < arr[0].length && idx < str.length){
     let curr = arr[x][y];
     if (curr !== str[idx]) return false;
+    if (idx === str.length - 1) return true;
     x--;
     y++;
     idx++;
   }
+  if (x < 0 || y >= arr[0].length) return false;
   return true;
 }
 function checkDiagDL(x,y,arr,str){
@@ -98,10 +112,12 @@ function checkDiagDL(x,y,arr,str){
   while (x < arr.length && y >= 0 && idx < str.length){
     let curr = arr[x][y];
     if (curr !== str[idx]) return false;
+    if (idx === str.length - 1) return true;
     x++;
     y--;
     idx++;
   }
+  if (x >= arr.length || y < 0) return false;
   return true;
 }
 function checkDiagDR(x,y,arr,str){
@@ -111,25 +127,38 @@ function checkDiagDR(x,y,arr,str){
   while (x < arr.length && y < arr[0].length && idx < str.length){
     let curr = arr[x][y];
     if (curr !== str[idx]) return false;
+    if (idx === str.length - 1) return true;
     x++;
     y++;
     idx++;
   }
+  if (x >= arr.length || y >= arr[0].length) return false;
   return true;
 }
 
 function findXmas(){
   let numFound = 0;
   let grid = readInput();
+  //console.log('grid is: ', grid);
   for (let i = 0; i < grid.length; i++){
     let row = grid[i];
     for (let j = 0; j < row.length; j++){
       if (grid[i][j] === 'X'){
-      let found = (checkUp(i,j,grid,TARGET) || checkDown(i,j,grid,TARGET)
-                  || checkLeft(i,j,grid,TARGET) || checkRight(i,j,grid,TARGET)
-                  || checkDiagDL(i,j,grid,TARGET) || checkDiagDR(i,j,grid,TARGET)
-                  || checkDiagUL(i,j,grid,TARGET) || checkDiagUR(i,j,grid,TARGET));
-      if (found) numFound++;
+      // let found = (checkUp(i,j,grid,TARGET) || checkDown(i,j,grid,TARGET)
+      //             || checkLeft(i,j,grid,TARGET) || checkRight(i,j,grid,TARGET)
+      //             || checkDiagDL(i,j,grid,TARGET) || checkDiagDR(i,j,grid,TARGET)
+      //             || checkDiagUL(i,j,grid,TARGET) || checkDiagUR(i,j,grid,TARGET));
+      // if (found) numFound++;
+      let hits = 0;
+      if (checkUp(i,j,grid,TARGET)) hits++;
+      if (checkDown(i,j,grid,TARGET)) hits++;
+      if (checkLeft(i,j,grid,TARGET)) hits++;
+      if (checkRight(i,j,grid,TARGET)) hits++;
+      if (checkDiagDL(i,j,grid,TARGET)) hits++;
+      if (checkDiagDR(i,j,grid,TARGET)) hits++;
+      if (checkDiagUL(i,j,grid,TARGET)) hits++;
+      if (checkDiagUR(i,j,grid,TARGET)) hits++;
+      numFound = numFound + hits;
     }
     }
   }
@@ -140,3 +169,5 @@ let numXmas = findXmas();
 console.log('No. of XMAS found: ', numXmas);
 
 //2107 is too low
+
+//3138 is too high

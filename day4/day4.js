@@ -2,6 +2,7 @@
 const fs = require('node:fs');
 
 const TARGET = 'XMAS';
+const TARGET_2 = 'MAS';
 
 function readInput(){
   const data = fs.readFileSync('/home/sdowd/advent24/day4/input.txt',
@@ -171,3 +172,42 @@ console.log('No. of XMAS found: ', numXmas);
 //2107 is too low
 
 //3138 is too high
+
+//////////part 2//////////////////
+
+/**
+ *
+ patterns:
+ m s
+  a
+ m s
+
+ m m
+  a
+ s s
+
+ s m
+  a
+ s m
+
+ s s
+  a
+ m m
+
+ a in the center, 2m, 2s, m/s cannot be 'across' from each other
+ if m is [x][y], other m cannot be [x-2][y+2] or [x+2][y-2]
+ */
+
+//i,j is the coords of letter A, (row, col, respectively)
+function crossCheck(i,j,grid,str){
+  //first or last row/col can't be an X-MAS center
+ if (i === 0 || j === 0 || i === grid.length - 1 || j === grid[0].length - 1){
+  return false;
+ }
+
+ //check for required letters
+ const charMap = new Map();
+
+
+
+}

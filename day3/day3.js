@@ -46,8 +46,27 @@ const exp3 = /mul\([0-9]{1,3},[0-9]{1,3}\)|don't\(\)|do\(\)/g;
 function part2(){
   let sum = 0;
   const data = readInput();
-  const arr = data.match(exp3);
+  const arr = [...data.match(exp3)];
   console.log(typeof(data));
+  console.log(arr.length);
+  console.log(arr[0]);
+  let multOn = true;
+  arr.reverse();
+  while (arr.length){
+    let curr = arr.pop();
+    if (curr === 'do()'){
+      multOn = true;
+    } else if (curr === 'don\'t()'){
+      multOn = false;
+    } else {
+    const numStrs = curr.match(exp2);
+    let first = Number(numStrs[0]);
+    let second = Number(numStrs[1]);
+    if (multOn) sum+= (first * second);
+    }
+  }
+  return sum;
 }
 
-part2();
+let newSum = part2();
+console.log('new sum is: ', newSum);
